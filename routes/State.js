@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const State = require('../model/State');
+const User = require('../model/User');
 
 router.get('/',(req,res) =>{
     State.find({}).then(response =>{
@@ -10,14 +11,16 @@ router.get('/',(req,res) =>{
     });
 
 router.delete('/',(req,res) =>{
-    State.deleteMany();
+    State.deleteMany().then(response=>{
+        res.send('ok')
+    });
     });
 
 router.post('/:userName',(req,res) =>{
-    const user = {userName: req.params.userName};
-    State.insertOne({userName: req.params.userName}).then(response=>{
-        res.json(user);
-    });
+    const user = new State({userName: req.params.userName});
+    user.save().then(response=>{
+        res.send('ok')
+    })
 });
 
 
