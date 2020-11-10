@@ -11,4 +11,4 @@ const CompanySchema = mongoose.Schema({
     url: {type: String, required: true}
 })
 
-module.exports = mongoose.model('Company',CompanySchema);
+module.exports = mongoose.model('Company',CompanySchema,'Companies');

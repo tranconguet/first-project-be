@@ -4,46 +4,33 @@ const mongoose = require('mongoose');
 const User = require('../model/User');
 
 router.get('/', async (req,res) =>{
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
-        await db.collection('Users').find({}).toArray((err, result) =>{
-            res.json(result);
-            db.close();
+    User.find({}).then(response =>{
+            res.json(response);
           });
     });
-});
 
 router.delete('/:userName', async (req, res) => {
     const userName = req.params.userName
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
-        await db.collection('Users').deleteOne({userName: userName})
+    User.deleteOne({userName: userName})
         .then(response=>{
             res.send('ok')
-            db.close()
         });
     });
-})
 
 router.get('/:userId', async (req,res) =>{
     const id = req.params.userId;
-    console.log(id);
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
-        await db.collection('Users').find({_id: mongoose.Types.ObjectId(id)}).toArray((err, result) =>{
-            res.json(result);
-            db.close();
+    User.find({_id: mongoose.Types.ObjectId(id)}).then(response =>{
+            res.json(response);
           });
     });
-})
 
 router.get('/users/:userName', async (req,res) =>{
     const name = req.params.userName;
     console.log(name);
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
-        await db.collection('Users').find({userName: name}).toArray((err, result) =>{
-            res.json(result);
-            db.close();
+    User.find({userName: name}).then(response =>{
+            res.json(response);
           });
     });
-})
 
 router.post('/', (req,res) =>{
     let newUser;
@@ -63,12 +50,10 @@ router.post('/', (req,res) =>{
             address: req.body.address
         });
     }
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-        db.collection('Users').insertOne(newUser, () => {
+    User.insertOne(newUser, () => {
             res.send('item has been inserted!')
         });
-    });
-})
+});
 
 router.patch('/users/:userName', (req,res) =>{
     let data;
@@ -105,12 +90,10 @@ router.patch('/users/:userName', (req,res) =>{
             overviews: req.body.overviews,
             benefits: req.body.benefits
         }
-    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-        db.collection('Users').updateOne({userName: req.body.userName},{$set: data},()=>{
+    User.updateOne({userName: req.body.userName},{$set: data},()=>{
             console.log(req.body);
             res.send('ok');
-        })});
-    });
+    })});
 
 
 module.exports = router;

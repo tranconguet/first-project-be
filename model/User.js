@@ -17,4 +17,4 @@ const CandidateSchema = mongoose.Schema({
     experiences: {type: String,required: false},
 })
 
-module.exports = mongoose.model('User',CandidateSchema);
+module.exports = mongoose.model('User',CandidateSchema,'Users');
