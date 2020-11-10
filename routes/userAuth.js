@@ -12,6 +12,17 @@ router.get('/', async (req,res) =>{
     });
 });
 
+router.delete('/:userName', async (req, res) => {
+    const userName = req.params.userName
+    mongoose.connect('mongodb://localhost:27017/first-project-db',{ useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
+        await db.collection('Users').deleteOne({userName: userName})
+        .then(response=>{
+            res.send('ok')
+            db.close()
+        });
+    });
+})
+
 router.get('/:userId', async (req,res) =>{
     const id = req.params.userId;
     console.log(id);
